@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import Favourites from "./components/Favourites";
+import Tracked from "./components/Tracked";
 import Stocks from "./components/Stocks";
 
 function App() {
@@ -32,7 +32,7 @@ function App() {
             }
             onClick={() => setIsGraph(false)}
           >
-            Favourites
+            Tracked
           </button>
           <button
             //@ts-ignore
@@ -48,7 +48,7 @@ function App() {
         </div>
         <div className="p-2 text-white opacity-40 hidden md:block">{date}</div>
       </div>
-      {isGraph ? <Stocks /> : <Favourites />}
+      {isGraph ? <Stocks /> : <Tracked />}
     </div>
   );
 }

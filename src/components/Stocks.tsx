@@ -1,6 +1,6 @@
 import React from "react";
+import { LoadingOverlay, Box, Switch } from "@mantine/core";
 import { useState } from "react";
-import { LoadingOverlay, Box } from "@mantine/core";
 import {
   LineChart,
   Line,
@@ -9,7 +9,6 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  Area,
   ResponsiveContainer,
   BarChart,
   Bar,
@@ -23,7 +22,7 @@ const Stocks = () => {
   const [stock, setStock] = useState<string>("");
   const [length, setLength] = useState<string>("TIME_SERIES_MONTHLY");
   const [stockData, setStockData] = useState<any>("");
-  const [chartType, setChartType] = useState<any>("Line");
+  const [isLineChart, setIsLineChart] = useState<boolean>(true);
 
   const handleSubmit = (stockName: string) => {
     setIsError(false);
@@ -78,12 +77,6 @@ const Stocks = () => {
       (item: any) =>
         new Date(item.date) >= oneYearAgo && new Date(item.date) <= currentDate
     );
-
-  //@ts-ignore
-  const Candlestick = ({ x, y, width, height, fill }) => {
-    return <Rectangle x={x} y={y} width={width} height={height} fill={fill} />;
-  };
-
   return (
     <div className="w-full h-full pt-4 p-3 md:p-10 md:pt-1">
       <Box
@@ -98,8 +91,8 @@ const Stocks = () => {
           loaderProps={{ size: "md", color: "#8C7CF0", variant: "bars" }}
           transitionDuration={20}
         />
-        <div className="w-full">
-          <div className="flex w-full justify-start items-baseline gap-2">
+        <div className="w-full flex justify-between flex-wrap md:flex-nowrap mb-3">
+          <div className="flex w-full md:w-1/3 md:justify-start justify-center items-baseline gap-2">
             <p className="text-gray-400 font-bold md:text-lg text-md">
               Stock symbol:
             </p>
@@ -116,20 +109,25 @@ const Stocks = () => {
             >
               Search
             </button>
-            {isError && (
-              <p className="text-red-600 ml-2">
-                Error! Make sure the stock symbol is correct or try again later!
-              </p>
-            )}
           </div>
-          <div className="text-white font-black text-6xl flex justify-start mt-5">
-            <div className="flex flex-col">
-              <div className="flex"></div>
-            </div>
+          <div className="fflex w-full md:w-1/3 md:justify-end md:items-end justify-center items-center"></div>
+          <div className="flex w-full md:w-1/3 md:justify-end md:items-end justify-center items-center">
+            <p className="text-sm text-white opacity-50 w-24">Line Chart</p>
+            <Switch
+              onChange={() => {
+                setIsLineChart(!isLineChart);
+              }}
+              color="violet"
+            />
+            <p className="text-sm text-white opacity-50 w-24">Box Chart</p>
           </div>
         </div>
         <ResponsiveContainer width="100%" height="90%">
-          {chartType == "Line" ? (
+          {isError ? (
+            <p className="text-red-600 ml-2">
+              Error! Make sure the stock symbol is correct or try again later!
+            </p>
+          ) : isLineChart ? (
             <LineChart data={filteredData}>
               <CartesianGrid strokeDasharray="1 10" />
               <XAxis dataKey="date" />
@@ -137,7 +135,7 @@ const Stocks = () => {
               <Tooltip />
               <Legend
                 onClick={(e) => {
-                  // console.log(e)
+                  // console.log(e) // WIP DISABLE SERIES
                 }}
               />
               <Line
@@ -176,25 +174,25 @@ const Stocks = () => {
                 type="monotone"
                 dataKey="high"
                 fill="#FFBB28"
-                animationDuration={2}
+                animationDuration={3}
               />
               <Bar
                 type="monotone"
                 dataKey="low"
                 fill="#8884d8"
-                animationDuration={2}
+                animationDuration={3}
               />
               <Bar
                 type="monotone"
                 dataKey="open"
                 fill="#82ca9d"
-                animationDuration={2}
+                animationDuration={3}
               />
               <Bar
                 type="monotone"
                 dataKey="close"
                 fill="#ff7300"
-                animationDuration={2}
+                animationDuration={3}
               />
             </BarChart>
           )}
