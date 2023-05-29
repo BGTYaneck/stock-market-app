@@ -96,9 +96,9 @@ const Stocks = () => {
           className="rounded-3xl"
           overlayColor="#101532"
           loaderProps={{ size: "md", color: "#8C7CF0", variant: "bars" }}
-          transitionDuration={20}
+          transitionDuration={15}
         />
-        <div className="w-full flex justify-between flex-wrap md:flex-nowrap mb-3">
+        <div className="w-full flex justify-between flex-wrap md:flex-nowrap mb-3 gap-2">
           <div className="flex w-full md:w-1/3 md:justify-start justify-center items-baseline gap-2">
             <p className="text-gray-400 font-bold md:text-lg text-md">
               Stock symbol:
@@ -124,7 +124,12 @@ const Stocks = () => {
             <div className="flex flex-row gap-1">
               <MantineTooltip label="Daily display">
                 <button
-                  className="text-white font-extrabold border w-6 h-6 flex justify-center items-center text-sm rounded-md"
+                  //@ts-ignore
+                  className={
+                    length == "TIME_SERIES_DAILY_ADJUSTED"
+                      ? "text-white font-extrabold w-6 h-6 flex justify-center items-center text-sm rounded-md bg-[#8C7CF0]"
+                      : "text-white font-extrabold w-6 h-6 flex justify-center items-center text-sm rounded-md"
+                  }
                   onClick={() => {
                     setLength("TIME_SERIES_DAILY_ADJUSTED"),
                       setSeries("Time Series (Daily)");
@@ -135,7 +140,11 @@ const Stocks = () => {
               </MantineTooltip>
               <MantineTooltip label="Weekly display">
                 <button
-                  className="text-white font-extrabold border w-6 h-6 flex justify-center items-center text-sm rounded-md"
+                  className={
+                    length == "TIME_SERIES_WEEKLY"
+                      ? "text-white font-extrabold w-6 h-6 flex justify-center items-center text-sm rounded-md bg-[#8C7CF0]"
+                      : "text-white font-extrabold w-6 h-6 flex justify-center items-center text-sm rounded-md"
+                  }
                   onClick={() => {
                     setLength("TIME_SERIES_WEEKLY"),
                       setSeries("Weekly Time Series");
@@ -146,7 +155,11 @@ const Stocks = () => {
               </MantineTooltip>
               <MantineTooltip label="Monthly display">
                 <button
-                  className="text-white font-extrabold border w-6 h-6 flex justify-center items-center text-sm rounded-md"
+                  className={
+                    length == "TIME_SERIES_MONTHLY"
+                      ? "text-white font-extrabold w-6 h-6 flex justify-center items-center text-sm rounded-md bg-[#8C7CF0]"
+                      : "text-white font-extrabold w-6 h-6 flex justify-center items-center text-sm rounded-md"
+                  }
                   onClick={() => {
                     setLength("TIME_SERIES_MONTHLY"),
                       setSeries("Monthly Time Series");
