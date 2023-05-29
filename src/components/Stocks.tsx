@@ -1,4 +1,3 @@
-import React from "react";
 import { LoadingOverlay, Box, Switch } from "@mantine/core";
 import { Tooltip as MantineTooltip } from "@mantine/core";
 import { useState, useEffect } from "react";
@@ -13,7 +12,6 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
-  Rectangle,
 } from "recharts";
 import axios from "axios";
 
@@ -193,9 +191,9 @@ const Stocks = () => {
               <YAxis />
               <Tooltip />
               <Legend
-                onClick={(e) => {
-                  // console.log(e) // WIP DISABLE SERIES
-                }}
+              // onClick={(e) => {
+              //   console.log(e) // WIP DISABLE SERIES
+              // }}
               />
               <Line
                 type="monotone"

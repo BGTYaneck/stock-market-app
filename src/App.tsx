@@ -6,7 +6,6 @@ import Stocks from "./components/Stocks";
 function App() {
   //true - Graph , False- favourites
   const [isGraph, setIsGraph] = useState(true);
-  const [favourites, setFavourites] = useState<string[]>([]);
 
   let date;
   const today = new Date();
