@@ -1,6 +1,7 @@
 import React from "react";
 import { LoadingOverlay, Box, Switch } from "@mantine/core";
-import { useState } from "react";
+import { Tooltip as MantineTooltip } from "@mantine/core";
+import { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -21,8 +22,14 @@ const Stocks = () => {
   const [isError, setIsError] = useState<boolean>(false);
   const [stock, setStock] = useState<string>("");
   const [length, setLength] = useState<string>("TIME_SERIES_MONTHLY");
+  const [series, setSeries] = useState<string>("Monthly Time Series");
   const [stockData, setStockData] = useState<any>("");
+  const [stockDisplay, setStockDisplay] = useState<string>("");
   const [isLineChart, setIsLineChart] = useState<boolean>(true);
+
+  useEffect(() => {
+    filteredData && handleSubmit(stock);
+  }, [length]);
 
   const handleSubmit = (stockName: string) => {
     setIsError(false);
@@ -36,8 +43,8 @@ const Stocks = () => {
           "&apikey=VJCJ63J47WBZBWDQ"
       )
       .then((response) => {
-        const timeSeries = response.data["Monthly Time Series"];
-
+        const timeSeries = response.data[series];
+        setStockDisplay(response.data["Meta Data"]["2. Symbol"]);
         const data = Object.keys(timeSeries).map((date) => {
           const weeklyData = timeSeries[date];
           return {
@@ -70,17 +77,17 @@ const Stocks = () => {
     currentDate.getDate()
   );
 
-  // Filter the stock data for the past one year
   const filteredData =
     stockData &&
     stockData.filter(
       (item: any) =>
         new Date(item.date) >= oneYearAgo && new Date(item.date) <= currentDate
     );
+
   return (
     <div className="w-full h-full pt-4 p-3 md:p-10 md:pt-1">
       <Box
-        className="md:m-10  m-2 mt-1 border h-[52rem] rounded-3xl bg-[#111633] border-[#242944] flex flex-col p-4"
+        className="md:m-10 mb-1 m-2 border h-[87%] rounded-3xl bg-[#111633] border-[#242944] flex flex-col p-4"
         pos="relative"
       >
         <LoadingOverlay
@@ -110,7 +117,46 @@ const Stocks = () => {
               Search
             </button>
           </div>
-          <div className="fflex w-full md:w-1/3 md:justify-end md:items-end justify-center items-center"></div>
+          <div className="flex flex-col w-full md:w-1/3 justify-center items-center border-x-2 border-x-gray-500">
+            <p className="font-extrabold text-white text-3xl">
+              {filteredData ? stockDisplay : "Select a stock"}
+            </p>
+            <div className="flex flex-row gap-1">
+              <MantineTooltip label="Daily display">
+                <button
+                  className="text-white font-extrabold border w-6 h-6 flex justify-center items-center text-sm rounded-md"
+                  onClick={() => {
+                    setLength("TIME_SERIES_DAILY_ADJUSTED"),
+                      setSeries("Time Series (Daily)");
+                  }}
+                >
+                  D
+                </button>
+              </MantineTooltip>
+              <MantineTooltip label="Weekly display">
+                <button
+                  className="text-white font-extrabold border w-6 h-6 flex justify-center items-center text-sm rounded-md"
+                  onClick={() => {
+                    setLength("TIME_SERIES_WEEKLY"),
+                      setSeries("Weekly Time Series");
+                  }}
+                >
+                  W
+                </button>
+              </MantineTooltip>
+              <MantineTooltip label="Monthly display">
+                <button
+                  className="text-white font-extrabold border w-6 h-6 flex justify-center items-center text-sm rounded-md"
+                  onClick={() => {
+                    setLength("TIME_SERIES_MONTHLY"),
+                      setSeries("Monthly Time Series");
+                  }}
+                >
+                  M
+                </button>
+              </MantineTooltip>
+            </div>
+          </div>
           <div className="flex w-full md:w-1/3 md:justify-end md:items-end justify-center items-center">
             <p className="text-sm text-white opacity-50 w-24">Line Chart</p>
             <Switch
