@@ -12,8 +12,14 @@ const Tracked = () => {
   const [stockName, setStockName] = useState<string>("");
 
   const handleSubmit = (stock: string) => {
-    const newArr = [...favourites];
+    let newArr = [...favourites];
     newArr.push(stock);
+    setFavourites(newArr);
+  };
+
+  const handleRemove = (stock: string) => {
+    let newArr = [...favourites];
+    newArr = newArr.filter((item) => item !== stock);
     setFavourites(newArr);
   };
 
@@ -38,6 +44,12 @@ const Tracked = () => {
           return (
             <div className="w-[48rem] h-[4rem] bg-[#111633] rounded-xl flex justify-start p-3 items-center text-white text-2xl text-extrabold">
               {item}
+              <button
+                onClick={() => handleRemove(item)}
+                className="mb-1 p-2 bg-[#8C7CF0] text-white font-bold rounded-md ml-2 text-sm"
+              >
+                Untrack
+              </button>
             </div>
           );
         })}
